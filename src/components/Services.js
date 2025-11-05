@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ImageMockup from './ImageMockup';
 
 const Services = () => {
@@ -55,6 +55,32 @@ const Services = () => {
   return (
     <section id="services" className="section-padding bg-white relative overflow-hidden">
       <div className="container-custom">
+        {/* Autoplay videos only when visible to avoid power saver interruptions */}
+        {(() => {
+          // inline effect runner without changing tree structure
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          useEffect(() => {
+            const videos = Array.from(document.querySelectorAll('video.autoplay-video'));
+            if (videos.length === 0) return;
+            const io = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  const v = entry.target;
+                  if (!(v instanceof HTMLVideoElement)) return;
+                  if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    v.play().catch(() => {});
+                  } else {
+                    v.pause();
+                  }
+                });
+              },
+              { threshold: [0, 0.5, 1] }
+            );
+            videos.forEach((v) => io.observe(v));
+            return () => io.disconnect();
+          }, []);
+          return null;
+        })()}
         {/* Header */}
         <div className="text-center mb-12 animate-on-scroll">
           <span className="section-subtitle">GRUP ŞİRKETLERİ</span>
@@ -133,20 +159,24 @@ const Services = () => {
                       </div>
                     ) : service.company === 'Locomotive Door' ? (
                       <div className="glass-effect rounded-xl overflow-hidden bg-neutral/20 h-full min-h-[220px]">
-                        <img 
-                          src="/images/locomotivedoorslider1.webp"
-                          alt="Locomotive Door Production"
-                          className="w-full h-full object-cover"
-                        />
+                        <video
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="autoplay-video w-full h-full object-cover block"
+                        >
+                          <source src="/videos/locomotivedoorvideo.mp4" type="video/mp4" />
+                          Tarayıcınız video etiketini desteklemiyor.
+                        </video>
                       </div>
                     ) : service.company === 'ASDTC Mühendislik' ? (
                       <div className="glass-effect rounded-xl overflow-hidden bg-neutral/20 h-full min-h-[220px]">
                         <video
-                          autoPlay
                           loop
                           muted
                           playsInline
-                          className="w-full h-full object-cover block"
+                          preload="metadata"
+                          className="autoplay-video w-full h-full object-cover block"
                         >
                           <source src="/videos/asdtc-video2.mp4" type="video/mp4" />
                           Tarayıcınız video etiketini desteklemiyor.
