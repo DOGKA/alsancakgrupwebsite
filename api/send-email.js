@@ -12,16 +12,19 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    const gmailUser = process.env.GMAIL_USER || process.env.GMAIL_USER_1;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_APP_PASSWORD_1;
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.GMAIL_USER, // noreply.alsancakgrup@gmail.com
-        pass: process.env.GMAIL_APP_PASSWORD,
+        user: gmailUser, // noreply.alsancakgrup@gmail.com
+        pass: gmailPass,
       },
     });
 
     const mailOptions = {
-      from: `Alsancak Grup <${process.env.GMAIL_USER}>`,
+      from: `Alsancak Grup <${gmailUser}>`,
       to: 'info@alsancakgrup.com.tr',
       subject: `[Web İletişim] ${subject}`,
       text: `Gönderen: ${fullName} <${email}>
