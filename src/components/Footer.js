@@ -111,9 +111,9 @@ const Footer = () => {
               © {new Date().getFullYear()} <span className="text-light font-semibold">ALSANCAK GRUP</span>. Tüm hakları saklıdır.
             </p>
             <div className="flex gap-6 text-light-muted">
-              <a href="#" className="hover:text-accent transition-colors">Gizlilik</a>
-              <a href="#" className="hover:text-accent transition-colors">KVKK</a>
-              <a href="#" className="hover:text-accent transition-colors">Çevre Politikası</a>
+              <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Gizlilik</a>
+              <a href="/kvkk.html" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">KVKK</a>
+              <a href="/environment.html" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Çevre Politikası</a>
             </div>
           </div>
         </div>
